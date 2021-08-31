@@ -1,0 +1,2 @@
+{ "statusCode": <%= error.status || 500 %>, "ok": false, "message": "<%= message %>", "data": ["<%-
+error.stack ? error.stack.split("\n").join("\",\n\"") : '' %>"] }
