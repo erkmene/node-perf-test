@@ -6,13 +6,31 @@ const benchmark = require.main.require('./controllers/benchmark');
 
 router.get('/', [
   asyncMiddleware(async (req, res, next) => {
+    return utils.apiResponse(res, { hello: 'bye!' });
+  }),
+]);
+
+router.get('/cpu', [
+  asyncMiddleware(async (req, res, next) => {
     const coefficient = req.query.c || 1;
     const cpu = benchmark.cpuPerfTest(coefficient);
+    return utils.apiResponse(res, cpu);
+  }),
+]);
+
+router.get('/network-github', [
+  asyncMiddleware(async (req, res, next) => {
+    const coefficient = req.query.c || 1;
     const networkGithub = await benchmark.networkTestGithub(coefficient);
-    return utils.apiResponse(res, {
-      cpu,
-      networkGithub,
-    });
+    return utils.apiResponse(res, networkGithub);
+  }),
+]);
+
+router.get('/network-internal', [
+  asyncMiddleware(async (req, res, next) => {
+    const coefficient = req.query.c || 1;
+    const networkInternal = await benchmark.networkTestInternal(coefficient);
+    return utils.apiResponse(res, networkInternal);
   }),
 ]);
 

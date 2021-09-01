@@ -3,6 +3,7 @@ const axios = require('axios');
 const MODIFIERS = {
   CPU: 10000,
   NETWORK_GITHUB: 20,
+  NETWORK_INTERNAL: 10,
 };
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -49,15 +50,12 @@ const cpuPerfTest = (coefficient) => {
   };
 };
 
-const networkTestGithub = async (coefficient) => {
+const networkTest = async (url, iterations, data) => {
   const startMemory = process.memoryUsage().heapUsed / 1024 / 1024;
   const nanoTimes = [];
-  const iterations = Math.round(coefficient * MODIFIERS.NETWORK_GITHUB);
   for (let i = 0; i < iterations; i++) {
     const start = process.hrtime.bigint();
-    await axios.get(
-      'https://gist.githubusercontent.com/kolyasademetrio/3679e8e2c2e2ed0a449270094bd6997d/raw/5fac5d71f17fce7fb2cd250712a1f2221d0e0bb7/bootstrap.css'
-    );
+    await axios.get(url, data);
     nanoTimes[i] = process.hrtime.bigint() - start;
     await sleep(100);
   }
@@ -77,7 +75,29 @@ const networkTestGithub = async (coefficient) => {
   };
 };
 
+const networkTestGithub = async (coefficient) => {
+  const iterations = Math.round(coefficient * MODIFIERS.NETWORK_GITHUB);
+  return networkTest(
+    'https://gist.githubusercontent.com/kolyasademetrio/3679e8e2c2e2ed0a449270094bd6997d/raw/5fac5d71f17fce7fb2cd250712a1f2221d0e0bb7/bootstrap.css',
+    iterations
+  );
+};
+
+const networkTestInternal = async (coefficient) => {
+  const iterations = Math.round(coefficient * MODIFIERS.NETWORK_INTERNAL);
+
+  if (!process.env.NETWORK_INTERNAL_URL) {
+    return 'Missing test URL';
+  } else if (!process.env.NETWORK_INTERNAL_HEADERS) {
+    return 'Missing test headers';
+  }
+
+  headers = JSON.parse(process.env.NETWORK_INTERNAL_HEADERS);
+  return networkTest(process.env.NETWORK_INTERNAL_URL, iterations, { headers });
+};
+
 module.exports = {
   cpuPerfTest,
   networkTestGithub,
+  networkTestInternal,
 };

@@ -6,7 +6,7 @@ const fs = require('fs');
 const logger = require('morgan');
 const path = require('path');
 
-if (fs.existsSync(`./config/.env.${process.env.NODE_ENV}`)) {
+if (process.env.NODE_ENV && fs.existsSync(`./config/.env.${process.env.NODE_ENV}`)) {
   require('dotenv').config({
     path: `./config/.env.${process.env.NODE_ENV}`,
   });
