@@ -2,9 +2,9 @@ const axios = require('axios');
 
 const MODIFIERS = {
   CPU: 10000,
-  NETWORK_GITHUB: 20,
+  NETWORK_GITHUB: 10,
   NETWORK_INTERNAL: 10,
-  NETWORK_CONTENTFUL: 5,
+  NETWORK_CONTENTFUL: 10,
 };
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
