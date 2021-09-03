@@ -4,6 +4,7 @@ const MODIFIERS = {
   CPU: 10000,
   NETWORK_GITHUB: 20,
   NETWORK_INTERNAL: 10,
+  NETWORK_CONTENTFUL: 5,
 };
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -83,6 +84,16 @@ const networkTestGithub = async (coefficient) => {
   );
 };
 
+const networkTestContentful = async (coefficient) => {
+  const iterations = Math.round(coefficient * MODIFIERS.NETWORK_CONTENTFUL);
+
+  if (!process.env.NETWORK_CONTENTFUL_URL) {
+    return 'Missing test URL';
+  }
+
+  return networkTest(process.env.NETWORK_CONTENTFUL_URL, iterations);
+};
+
 const networkTestInternal = async (coefficient) => {
   const iterations = Math.round(coefficient * MODIFIERS.NETWORK_INTERNAL);
 
@@ -100,4 +111,5 @@ module.exports = {
   cpuPerfTest,
   networkTestGithub,
   networkTestInternal,
+  networkTestContentful,
 };

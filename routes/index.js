@@ -26,6 +26,14 @@ router.get('/network-github', [
   }),
 ]);
 
+router.get('/network-contentful', [
+  asyncMiddleware(async (req, res, next) => {
+    const coefficient = req.query.c || 1;
+    const networkContentful = await benchmark.networkTestContentful(coefficient);
+    return utils.apiResponse(res, networkContentful);
+  }),
+]);
+
 router.get('/network-internal', [
   asyncMiddleware(async (req, res, next) => {
     const coefficient = req.query.c || 1;
