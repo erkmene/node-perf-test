@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "cross-env TZ=utc DEBUG=perf-test* NODE_ENV=dev NODE_PATH=. LOG_LEVEL=debug nodemon --inspect=0.0.0.0:8001 --watch ./",
     "start": "DEBUG=perf-test* NODE_ENV=dev LOG_LEVEL=debug node index.js",
+    "report": "DEBUG=perf-test* NODE_ENV=dev LOG_LEVEL=debug node report.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -16,6 +17,7 @@
     "cross-env": "^7.0.3",
     "dotenv": "^10.0.0",
     "ejs": "^3.1.6",
+    "exceljs": "^4.3.0",
     "express": "^4.17.1",
     "morgan": "^1.10.0"
   },
